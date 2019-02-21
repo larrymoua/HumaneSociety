@@ -8,22 +8,6 @@ namespace HumaneSociety
 {
     public static class Query
     {
-        //TO DO: make GetRoom(animal) used in UserEmployee
-        //TO DO: make GetPendingAdoptions() used in UserEmployee
-        //TO DO: make UpdateAdoption(bool, adoption) in UserEmployee
-        //TO DO: SearchForAnimalByMultipleTraits() in UserEmployee
-        //TO DO: GetShots(animal)
-        //TO DO: UpdateShots(string, animal)
-        //TO DO: EnterAnimalUpdate(animal, updates)
-        //TO DO: GetCategoryId
-
-        internal static List<Category> GetCategoryId()
-        {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
-            List<Category> allCategories = db.Categories.ToList();
-            return allCategories;
-        }
 
         internal static List<USState> GetStates()
         {
