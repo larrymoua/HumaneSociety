@@ -33,7 +33,16 @@ namespace HumaneSociety
 
             return allStates;
         }
+        internal static void RemoveAnimal(Animal animal)
+        {
+            
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            animal = db.Animals.Where(a => a.AnimalId == animal.AnimalId).Single();
+
+            db.Animals.DeleteOnSubmit(animal);
+            db.SubmitChanges();
+        }
         internal static Client GetClient(string userName, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -192,6 +201,7 @@ namespace HumaneSociety
 
             db.SubmitChanges();
         }
+     
         internal static List<Animal> SearchForAnimalByMultipleTraits()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -236,10 +246,7 @@ namespace HumaneSociety
 
             return shotList;
         }
-        internal static void RemoveAnimal(Animal animal)
-        {
-
-        }
+      
         internal static void RunEmployeeQueries(Employee employee, string updated)
         {
 
