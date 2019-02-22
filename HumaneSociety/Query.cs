@@ -189,16 +189,16 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animal.AnimalId).FirstOrDefault();
+            Animal newAnimal = new Animal();
 
-            animalFromDb = db.Animals.Where(n => n.Name == animal.Name).FirstOrDefault();
+            newAnimal.Name = animal.Name;
+            newAnimal.Age = animal.Age;
+            newAnimal.Demeanor = animal.Demeanor;
+            newAnimal.KidFriendly = animal.KidFriendly;
+            newAnimal.PetFriendly = animal.PetFriendly;
+            newAnimal.Weight = animal.Weight;
 
-            animalFromDb = db.Animals.Where(a => a.Age == animal.Age).FirstOrDefault();
-            animalFromDb = db.Animals.Where(a => a.Demeanor == animal.Demeanor).FirstOrDefault();
-            animalFromDb = db.Animals.Where(a => a.KidFriendly == animal.KidFriendly).FirstOrDefault();
-            animalFromDb = db.Animals.Where(a => a.PetFriendly == animal.PetFriendly).FirstOrDefault();
-            animalFromDb = db.Animals.Where(a => a.Weight == animal.Weight).FirstOrDefault();
-
+            db.Animals.InsertOnSubmit(newAnimal);
             db.SubmitChanges();
         }
      
@@ -224,9 +224,12 @@ namespace HumaneSociety
         }
         internal static int GetDietPlanId()
         {
-            int dietPlanId = 0;
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-            return dietPlanId;
+            var dietPlanId = db.Animals.Select(d => d.DietPlanId);
+           
+
+            return Convert.ToInt32(dietPlanId);
         }
         internal static List<Adoption> GetPendingAdoptions()
         {
@@ -235,9 +238,11 @@ namespace HumaneSociety
         }
         internal static Room GetRoom(int animalID)
         {
-            Room room = new Room();
-            return room;
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            Room foundRoom = db.Rooms.Where(r => r.AnimalId.Equals(animalID)).Single();
+
+            return foundRoom;          
         }
         internal static List<AnimalShot> GetShots(Animal animal)
         {
