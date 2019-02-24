@@ -10,9 +10,11 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            Animal cat = db.Animals.Where(a => a.AnimalId == 17).Single();
-            Query.GetShots(cat);       
+            //HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            //Animal cat = db.Animals.Where(a => a.AnimalId == 17).Single();
+            //Query.GetAnimalByID(18);     
+
+            Query.GetCategoryId("Shark");
         }
     }
 }

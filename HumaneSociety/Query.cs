@@ -8,21 +8,19 @@ namespace HumaneSociety
 {
     public static class Query
     {
-        //TO DO: make GetRoom(animal) used in UserEmployee
-        //TO DO: make GetPendingAdoptions() used in UserEmployee
-        //TO DO: make UpdateAdoption(bool, adoption) in UserEmployee
-        //TO DO: SearchForAnimalByMultipleTraits() in UserEmployee
-        //TO DO: GetShots(animal)
-        //TO DO: UpdateShots(string, animal)
-        //TO DO: EnterAnimalUpdate(animal, updates)
-        //TO DO: GetCategoryId
-
-        internal static int GetCategoryId()
+        internal static int GetCategoryId(string categoryName)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var category = db.Categories.Where(c => c.Name == categoryName).Single();
+            if (category == null)
+            {
+                Category newCategory = new Category();
+                newCategory.Name = categoryName;
 
-            int Id = 0;
-            return Id;
+                db.Categories.InsertOnSubmit(newCategory);
+                db.SubmitChanges();
+            }
+            return category.CategoryId;
         }
 
         internal static List<USState> GetStates()
@@ -211,6 +209,19 @@ namespace HumaneSociety
         }
         internal static void Adopt(Animal animal, Client client)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+
+            Adoption newAdoption = new Adoption();
+
+            newAdoption.ClientId = client.ClientId;
+            newAdoption.AnimalId = animal.AnimalId;
+            newAdoption.ApprovalStatus = "pending";
+            newAdoption.AdoptionFee = 75;
+            newAdoption.PaymentCollected = false;
+
+            db.Adoptions.InsertOnSubmit(newAdoption);
+
+            db.SubmitChanges();
 
         }
         internal static void EnterAnimalUpdate(Animal animal, Dictionary<int,string> updates)
@@ -219,7 +230,9 @@ namespace HumaneSociety
         }
         internal static Animal GetAnimalByID(int id)
         {
-            Animal animal = new Animal();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            Animal animal = db.Animals.Where(a => a.AnimalId == id).Single();
+
             return animal; 
         }
         internal static int GetDietPlanId()
@@ -233,7 +246,13 @@ namespace HumaneSociety
         }
         internal static List<Adoption> GetPendingAdoptions()
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             List<Adoption> adoptionsList = new List<Adoption>();
+            var pendingAdoptions = db.Adoptions.Where(p => p.ApprovalStatus == "pending");
+            foreach (var adoption in pendingAdoptions)
+            {
+                adoptionsList.Add(adoption);
+            }
             return adoptionsList;
         }
         internal static Room GetRoom(int animalID)
@@ -267,6 +286,8 @@ namespace HumaneSociety
         }
         internal static void UpdateShot(string booster, Animal animal)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+
 
         }
     }
