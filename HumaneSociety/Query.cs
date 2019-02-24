@@ -258,9 +258,14 @@ namespace HumaneSociety
         }
         internal static List<AnimalShot> GetShots(Animal animal)
         {
-            Shot shot = new Shot();
-            List<AnimalShot> shotList = new List<AnimalShot>();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            List<AnimalShot> shotList = new List<AnimalShot>();
+            var shots = db.AnimalShots.Where(a => a.AnimalId.Equals(animal.AnimalId));
+            foreach(var shot in shots)
+            {
+                shotList.Add(shot);
+            }
             return shotList;
         }
       
