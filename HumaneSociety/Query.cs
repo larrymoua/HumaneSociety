@@ -17,17 +17,9 @@ namespace HumaneSociety
         //TO DO: EnterAnimalUpdate(animal, updates)
         //TO DO: GetCategoryId
 
-        internal static int GetCategoryId()
-        {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
-            int Id = 0;
-            return Id;
-        }
-
         internal static List<USState> GetStates()
         {
-             HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
 
             List<USState> allStates = db.USStates.ToList();
 
@@ -42,6 +34,7 @@ namespace HumaneSociety
 
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
+
         }
         internal static Client GetClient(string userName, string password)
         {
@@ -60,7 +53,20 @@ namespace HumaneSociety
 
             return allClients;
         }
+        internal static int GetCategoryId(string categoryName)
+        {          
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();           
+            var category = db.Categories.Where(c => c.Name == categoryName).Single();
+            if (category == null)
+            {
+                Category newCategory = new Category();
+                newCategory.Name = categoryName;
 
+                db.Categories.InsertOnSubmit(newCategory);
+                db.SubmitChanges();
+            }
+            return category.CategoryId;
+        }
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
         {
             HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
@@ -233,7 +239,13 @@ namespace HumaneSociety
         }
         internal static List<Adoption> GetPendingAdoptions()
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             List<Adoption> adoptionsList = new List<Adoption>();
+            var pendingAdoptions = db.Adoptions.Where(p => p.ApprovalStatus == "pending");
+            foreach (var adoption in pendingAdoptions)
+            {
+                adoptionsList.Add(adoption);
+            }
             return adoptionsList;
         }
         internal static Room GetRoom(int animalID)
