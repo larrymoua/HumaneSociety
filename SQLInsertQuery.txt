@@ -1,0 +1,35 @@
+INSERT INTO Categories values ('Dog');
+INSERT INTO Categories values ('Cat');
+INSERT INTO Categories values ('Shark');
+INSERT INTO Categories values ('Monkey');
+INSERT INTO Categories values ('Turtle');
+
+INSERT INTO DietPlans values('Keto', 'No Carbs', '2');
+INSERT INTO DietPlans values('Paleo', 'Caveman', '5');
+INSERT INTO DietPlans values('Intermediate', 'None', '0');
+INSERT INTO DietPlans values('Protein', 'Meat', '8' );
+INSERT INTO DietPlans values('Vegetarian', 'No Meat', '10');
+
+INSERT INTO Animals values ('Spot', '2', '90', '3', '4', 'good', 'true', 'true', 'male', 'pending', '1');
+INSERT INTO Animals values ('Frank', '1', '18', '8', '4', 'sassy', 'false', 'false', 'male', 'not adopted', '2');
+INSERT INTO Animals values ('Spud', '3', '1000', '2', '4', 'killer', 'true', 'true', 'male', 'not adopted', '3');
+INSERT INTO Animals values ('Marcel', '4', '65', '4', '2', 'curious', 'true', 'true', 'male', 'pending', '4');
+INSERT INTO Animals values ('Franklin', '5', '45', '50', '5', 'slow', 'true', 'true', 'male', 'pending', '5');
+
+INSERT INTO Rooms values ('11', '1');
+INSERT INTO Rooms values ('22', '2');
+INSERT INTO Rooms values ('33', '3');
+INSERT INTO Rooms values ('44', '4');
+INSERT INTO Rooms values ('55', '5');
+INSERT INTO Rooms values ('66', '6');
+INSERT INTO Rooms values ('77', '7');
+INSERT INTO Rooms values ('88', '8');
+INSERT INTO Rooms values ('99', '9');
+INSERT INTO Rooms values ('100', '10');
+
+INSERT INTO Shots values ('booster');
+INSERT INTO Shots values ('measels');
+INSERT INTO Shots values ('cough');
+INSERT INTO Shots values ('tb');
+INSERT INTO Shots values ('flu');
+category = db.categories where c.categoryId => category.name
