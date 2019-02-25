@@ -229,36 +229,78 @@ namespace HumaneSociety
             Dictionary<int, string> keyValuePairs = UserInterface.GetAnimalCriteria();
 
             List<Animal> foundAnimals = new List<Animal>();
-        
-            foreach(KeyValuePair<int, string> entry in keyValuePairs)
+
+            foreach (KeyValuePair<int, string> entry in keyValuePairs)
             {
-                var search = db.Animals.Where(a => a.Name == entry.Value || a.Demeanor == entry.Value);
-                var searchInt = db.Animals.Where(a =>a.Weight == Convert.ToInt32(entry.Value) || a.Age == Convert.ToInt32(entry.Value) || a.AnimalId == Convert.ToInt32(entry.Value));
-                var searchBool = db.Animals.Where(a => a.KidFriendly == Convert.ToBoolean(entry.Value) || a.PetFriendly == Convert.ToBoolean(entry.Value));
-                var searchCategory = db.Categories.Where(c => c.Name == entry.Value);
-
-
-                if (search != null)
+                switch (entry.Key)
                 {
-                    foreach (var animal in search)
-                    {
-                        foundAnimals.Add(animal);
-                        search = null;
-                    }
-
+                    case 1:
+                        var searchCategory = db.Categories.Where(c => c.Name == entry.Value);
+                        foreach (var animals in searchCategory)
+                        {
+                            var searchAnimal = db.Animals.Where(a => a.CategoryId == animals.CategoryId );
+                            foreach (var animal in searchAnimal)
+                            {
+                                foundAnimals.Add(animal);
+                            }            
+                        }          
+                        break;
+                    case 2:
+                        var searchAnimalName = db.Animals.Where(n => n.Name == entry.Value);
+                        foreach (var animal in searchAnimalName)
+                        {
+                            foundAnimals.Add(animal);
+                        }
+                        break;
+                    case 3:
+                        var searchAge = db.Animals.Where(a => a.Age == Convert.ToInt64(entry.Value));
+                        foreach (var animal in searchAge)
+                        {
+                            foundAnimals.Add(animal);
+                        }
+                        break;
+                    case 4:
+                        var searchDemeanor = db.Animals.Where(d => d.Demeanor == entry.Value);
+                        foreach (var animal in searchDemeanor)
+                        {
+                            foundAnimals.Add(animal);
+                        }
+                        break;
+                    case 5:
+                        var searchKidFriendly = db.Animals.Where(k => k.KidFriendly == Convert.ToBoolean(entry.Value));
+                        foreach (var animal in searchKidFriendly)
+                        {
+                            foundAnimals.Add(animal);
+                        }
+                        break;
+                    case 6:
+                        var searchPetFriendly = db.Animals.Where(k => k.PetFriendly == Convert.ToBoolean(entry.Value));
+                        foreach (var animal in searchPetFriendly)
+                        {
+                            foundAnimals.Add(animal);
+                        }
+                        break;
+                    case 7:
+                        var searchWeight = db.Animals.Where(w => w.Weight == Convert.ToInt64(entry.Value));
+                        foreach (var animal in searchWeight)
+                        {
+                            foundAnimals.Add(animal);
+                        }
+                        break;
+                    case 8:
+                        var searchAnimalId = db.Animals.Where(a => a.AnimalId == Convert.ToInt64(entry.Value));
+                        foreach (var animal in searchAnimalId)
+                        {
+                            foundAnimals.Add(animal);
+                        }
+                        break;
+                    default:
+                        break;
                 }
-                else if ( searchInt != null)
-                {
-                    foreach (var animal in searchInt)
-                    {
-                        foundAnimals.Add(animal);
-                        searchInt = null;
-                    }
-                }
-
             }
+           var catchthing = foundAnimals.Distinct();
 
-            return foundAnimals;
+            return catchthing.ToList(); ;
         }
         internal static void Adopt(Animal animal, Client client)
         {
@@ -277,9 +319,44 @@ namespace HumaneSociety
             db.SubmitChanges();
 
         }
-        internal static void EnterAnimalUpdate(Animal animal, Dictionary<int,string> updates)
+        internal static void EnterAnimalUpdate(Animal animal, Dictionary<int, string> updates)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            Animal updateAnimal = db.Animals.Where(a => a.AnimalId == animal.AnimalId).Single();
+
+
+            foreach (KeyValuePair<int, string> entry in updates)
+            {
+             
+                switch (entry.Key)
+                {
+                    case 1:
+                        updateAnimal.CategoryId = Convert.ToInt32(entry.Value);
+                        break;
+                    case 2:
+                        updateAnimal.Name = entry.Value;
+                        break;
+                    case 3:
+                        updateAnimal.Age = Convert.ToInt32(entry.Value);
+                        break;
+                    case 4:
+                        updateAnimal.Demeanor = entry.Value;
+                        break;
+                    case 5:
+                        updateAnimal.KidFriendly = Convert.ToBoolean(entry.Value);
+                        break;
+                    case 6:
+                        updateAnimal.PetFriendly = Convert.ToBoolean(entry.Value);
+                        break;
+                    case 7:
+                        updateAnimal.Weight = Convert.ToInt32(entry.Value);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            db.SubmitChanges();
         }
         internal static Animal GetAnimalByID(int id)
         {
@@ -292,9 +369,7 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();            
 
-            var dietPlan = db.DietPlans.Where(d => d.Name == dietPlanName).Single();
-
-            return dietPlan.DietPlanId;
+         
         }
 
         internal static List<Adoption> GetPendingAdoptions()
@@ -331,14 +406,14 @@ namespace HumaneSociety
       
         internal static void RunEmployeeQueries(Employee employee, string updated)
         {
-
+            //switch case add , remove, delete, read, upda
         }
         internal static void UpdateAdoption(bool trueOrFalse, Adoption adoption)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             if (trueOrFalse == true)
-            { 
+            {
                 adoption.ApprovalStatus = "approved";
                 adoption.Animal.AdoptionStatus = "adopted";
                 adoption.PaymentCollected = true;
@@ -349,14 +424,17 @@ namespace HumaneSociety
             {
                 adoption.ApprovalStatus = "denied";
                 adoption.Animal.AdoptionStatus = "not adopted";
-                db.SubmitChanges();
+               
             }
-        }
+        }  
         internal static void UpdateShot(string booster, Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             var updatedShot = db.Shots.Where(s => s.Name == booster);
+            
+        
         }
+
     }
 }

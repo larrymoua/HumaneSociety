@@ -8,7 +8,8 @@ namespace HumaneSociety
 {
     class Admin : User
     {
-        delegate void StringToVoidFunction(string action);
+        private delegate void Crud();
+
         public override void LogIn()
         {
             UserInterface.DisplayUserOptions("What is your password?");
@@ -35,22 +36,26 @@ namespace HumaneSociety
         {
             if(input == "1" || input.ToLower() == "create")
             {
-                AddEmployee();
+                Crud add = new Crud(AddEmployee);
+                add();
                 RunUserMenus();
             }
             else if(input == "2" || input.ToLower() == "delete")
             {
-                RemoveEmployee();
+                Crud remove = new Crud(RemoveEmployee);
+                remove();
                 RunUserMenus();
             }
             else if(input == "3" || input.ToLower() == "read")
             {
-                ReadEmployee();
+                Crud Read = new Crud(ReadEmployee);
+                Read();
                 RunUserMenus();
             }
             else if (input == "4" || input.ToLower() == "update")
             {
-                UpdateEmployee();
+                Crud update = new Crud(UpdateEmployee);
+                update();
                 RunUserMenus();
             }
             else
@@ -121,7 +126,7 @@ namespace HumaneSociety
             employee.FirstName = UserInterface.GetStringData("first name", "the employee's");
             employee.LastName = UserInterface.GetStringData("last name", "the employee's");
             employee.EmployeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
-            employee.Email = UserInterface.GetStringData("email", "the employee's"); 
+            employee.Email = UserInterface.GetStringData("email", "the employee's"); ;
             try
             {
                 Query.RunEmployeeQueries(employee, "create");
