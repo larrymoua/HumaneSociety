@@ -220,5 +220,43 @@ namespace HumaneSociety
             }
 
         }
+        //public static Dictionary<int, string> ChangeIntToSearchCriteria(Dictionary<int, string> searchDictionary)
+        //{
+        //    Dictionary<string, string> newSearch = new Dictionary<string, string>();
+
+        //    foreach(KeyValuePair <int, string> entry in searchDictionary)
+        //    {
+        //        switch (entry.Key)
+        //        {
+        //            case 1:
+        //                newSearch.Add("Categories", entry.Value);
+        //                return searchDictionary;
+        //            case 2:
+        //                newSearch.Add("Name", entry.Value);
+        //                return searchDictionary;
+        //            case 3:
+        //                newSearch.Add("Age", entry.Value);
+        //                return searchDictionary;
+        //            case 4:
+        //                newSearch.Add("Categories", entry.Value);
+        //                return searchDictionary;
+        //            case 5:
+        //                newSearch.Add("Categories", entry.Value);
+        //                return searchDictionary;
+        //            case 6:
+        //                newSearch.Add("Categories", entry.Value);
+        //                return searchDictionary;
+        //            case 7:
+        //                newSearch.Add("Categories", entry.Value);
+        //                return searchDictionary;
+        //            case 8:
+        //                newSearch.Add("Categories", entry.Value);
+        //                return searchDictionary;
+        //            default:
+
+        //                return searchDictionary;
+        //        }
+        //    }
+        
     }
 }
