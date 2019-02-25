@@ -137,7 +137,18 @@ namespace HumaneSociety
             // submit changes
             db.SubmitChanges();
         }
+        internal static void UpdateDietPlan(DietPlan planWithUpdates)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            DietPlan planFromDb = db.DietPlans.Where(d => d.DietPlanId == planWithUpdates.DietPlanId).Single();
+
+            planFromDb.Name = planWithUpdates.Name;
+            planFromDb.FoodType = planWithUpdates.FoodType;
+            planFromDb.FoodAmountInCups = planWithUpdates.FoodAmountInCups;
+
+            db.SubmitChanges();
+        }
         internal static Employee RetrieveEmployeeUser(string email, int employeeNumber)
         {
             HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
@@ -199,7 +210,19 @@ namespace HumaneSociety
             db.Animals.InsertOnSubmit(newAnimal);
             db.SubmitChanges();
         }
-     
+        internal static void AddDietPlan(DietPlan diet)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+
+            DietPlan newDietPlan = new DietPlan();
+
+            newDietPlan.Name = diet.Name;
+            newDietPlan.FoodType = diet.FoodType;
+            newDietPlan.FoodAmountInCups = diet.FoodAmountInCups;
+
+            db.DietPlans.InsertOnSubmit(newDietPlan);
+            db.SubmitChanges();
+        }
         internal static List<Animal> SearchForAnimalByMultipleTraits()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -314,9 +337,9 @@ namespace HumaneSociety
 
             var dietPlanId = db.Animals.Select(d => d.DietPlanId);
            
-
             return Convert.ToInt32(dietPlanId);
         }
+
         internal static List<Adoption> GetPendingAdoptions()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -361,18 +384,22 @@ namespace HumaneSociety
             {
                 adoption.ApprovalStatus = "approved";
                 adoption.Animal.AdoptionStatus = "adopted";
+                adoption.PaymentCollected = true;
             }
             else
             {
                 adoption.ApprovalStatus = "denied";
                 adoption.Animal.AdoptionStatus = "not adopted";
+
             }
         }
+
+    }
         internal static void UpdateShot(string booster, Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-
+            var updatedShot = db.Shots.Where(s => s.Name == booster);
         }
     }
 }
