@@ -250,6 +250,7 @@ namespace HumaneSociety
             Console.Clear();
             Animal animal = new Animal();           
             string categoryName;
+            string dietPlanName;
             categoryName = UserInterface.GetStringData("category", "the animal's");
             animal.CategoryId = Query.GetCategoryId(categoryName);
             animal.Name = UserInterface.GetStringData("name", "the animal's");
@@ -258,7 +259,8 @@ namespace HumaneSociety
             animal.KidFriendly = UserInterface.GetBitData("the animal", "child friendly");
             animal.PetFriendly = UserInterface.GetBitData("the animal", "pet friendly");
             animal.Weight = UserInterface.GetIntegerData("the animal", "the weight of the");
-            animal.DietPlanId = Query.GetDietPlanId();
+            dietPlanName = UserInterface.GetStringData("diet plan name", "the animal's");
+            animal.DietPlanId = Query.GetDietPlanId(dietPlanName);
             Query.AddAnimal(animal);
         }
         private void AddNewDietPlan()
