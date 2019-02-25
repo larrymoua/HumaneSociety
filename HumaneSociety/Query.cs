@@ -8,22 +8,7 @@ namespace HumaneSociety
 {
     public static class Query
     {
-<<<<<<< HEAD
-        internal static int GetCategoryId(string categoryName)
-        {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var category = db.Categories.Where(c => c.Name == categoryName).Single();
-            if (category == null)
-            {
-                Category newCategory = new Category();
-                newCategory.Name = categoryName;
 
-                db.Categories.InsertOnSubmit(newCategory);
-                db.SubmitChanges();
-            }
-            return category.CategoryId;
-        }
-=======
         //TO DO: make GetRoom(animal) used in UserEmployee
         //TO DO: make GetPendingAdoptions() used in UserEmployee
         //TO DO: make UpdateAdoption(bool, adoption) in UserEmployee
@@ -32,7 +17,6 @@ namespace HumaneSociety
         //TO DO: UpdateShots(string, animal)
         //TO DO: EnterAnimalUpdate(animal, updates)
         //TO DO: GetCategoryId
->>>>>>> ccd8ba84967d520a1ed748b8f7ecb9aa820e8aee
 
         internal static List<USState> GetStates()
         {
@@ -247,11 +231,11 @@ namespace HumaneSociety
             db.Adoptions.InsertOnSubmit(newAdoption);
 
             db.SubmitChanges();
-
+            
         }
         internal static void EnterAnimalUpdate(Animal animal, Dictionary<int,string> updates)
         {
-
+            
         }
         internal static Animal GetAnimalByID(int id)
         {
@@ -307,13 +291,24 @@ namespace HumaneSociety
         }
         internal static void UpdateAdoption(bool trueOrFalse, Adoption adoption)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            if (trueOrFalse == true)
+            { 
+                adoption.ApprovalStatus = "approved";
+                adoption.Animal.AdoptionStatus = "adopted";
+            }
+            else
+            {
+                adoption.ApprovalStatus = "denied";
+                adoption.Animal.AdoptionStatus = "not adopted";
+            }
         }
         internal static void UpdateShot(string booster, Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-
+            
         }
     }
 }
