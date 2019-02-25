@@ -8,7 +8,6 @@ namespace HumaneSociety
 {
     public static class Query
     {
-<<<<<<< HEAD
         internal static int GetCategoryId(string categoryName)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -23,20 +22,10 @@ namespace HumaneSociety
             }
             return category.CategoryId;
         }
-=======
-        //TO DO: make GetRoom(animal) used in UserEmployee
-        //TO DO: make GetPendingAdoptions() used in UserEmployee
-        //TO DO: make UpdateAdoption(bool, adoption) in UserEmployee
-        //TO DO: SearchForAnimalByMultipleTraits() in UserEmployee
-        //TO DO: GetShots(animal)
-        //TO DO: UpdateShots(string, animal)
-        //TO DO: EnterAnimalUpdate(animal, updates)
-        //TO DO: GetCategoryId
->>>>>>> ccd8ba84967d520a1ed748b8f7ecb9aa820e8aee
 
         internal static List<USState> GetStates()
         {
-            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+             HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
 
             List<USState> allStates = db.USStates.ToList();
 
@@ -51,7 +40,6 @@ namespace HumaneSociety
 
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
-
         }
         internal static Client GetClient(string userName, string password)
         {
@@ -70,20 +58,7 @@ namespace HumaneSociety
 
             return allClients;
         }
-        internal static int GetCategoryId(string categoryName)
-        {          
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();           
-            var category = db.Categories.Where(c => c.Name == categoryName).Single();
-            if (category == null)
-            {
-                Category newCategory = new Category();
-                newCategory.Name = categoryName;
 
-                db.Categories.InsertOnSubmit(newCategory);
-                db.SubmitChanges();
-            }
-            return category.CategoryId;
-        }
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
         {
             HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
@@ -229,7 +204,38 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            Dictionary<int, string> keyValuePairs = UserInterface.GetAnimalCriteria();
+
             List<Animal> foundAnimals = new List<Animal>();
+        
+            foreach(KeyValuePair<int, string> entry in keyValuePairs)
+            {
+                var search = db.Animals.Where(a => a.Name == entry.Value || a.Demeanor == entry.Value);
+                var searchInt = db.Animals.Where(a =>a.Weight == Convert.ToInt32(entry.Value) || a.Age == Convert.ToInt32(entry.Value) || a.AnimalId == Convert.ToInt32(entry.Value));
+                var searchBool = db.Animals.Where(a => a.KidFriendly == Convert.ToBoolean(entry.Value) || a.PetFriendly == Convert.ToBoolean(entry.Value));
+                var searchCategory = db.Categories.Where(c => c.Name == entry.Value);
+
+
+                if (search != null)
+                {
+                    foreach (var animal in search)
+                    {
+                        foundAnimals.Add(animal);
+                        search = null;
+                    }
+
+                }
+                else if ( searchInt != null)
+                {
+                    foreach (var animal in searchInt)
+                    {
+                        foundAnimals.Add(animal);
+                        searchInt = null;
+                    }
+                }
+
+            }
+
             return foundAnimals;
         }
         internal static void Adopt(Animal animal, Client client)
