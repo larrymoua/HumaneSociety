@@ -208,7 +208,19 @@ namespace HumaneSociety
             db.Animals.InsertOnSubmit(newAnimal);
             db.SubmitChanges();
         }
-     
+        internal static void AddDietPlan(DietPlan diet)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+
+            DietPlan newDietPlan = new DietPlan();
+
+            newDietPlan.Name = diet.Name;
+            newDietPlan.FoodType = diet.FoodType;
+            newDietPlan.FoodAmountInCups = diet.FoodAmountInCups;
+
+            db.DietPlans.InsertOnSubmit(newDietPlan);
+            db.SubmitChanges();
+        }
         internal static List<Animal> SearchForAnimalByMultipleTraits()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -250,9 +262,9 @@ namespace HumaneSociety
 
             var dietPlanId = db.Animals.Select(d => d.DietPlanId);
            
-
             return Convert.ToInt32(dietPlanId);
         }
+
         internal static List<Adoption> GetPendingAdoptions()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -292,11 +304,11 @@ namespace HumaneSociety
         internal static void UpdateAdoption(bool trueOrFalse, Adoption adoption)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
+           
             if (trueOrFalse == true)
-            { 
+            {
                 adoption.ApprovalStatus = "approved";
-                adoption.Animal.AdoptionStatus = "adopted";
+                adoption.Animal.AdoptionStatus = "adopted";                
             }
             else
             {
@@ -308,6 +320,7 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            var updatedShot = db.Shots.Where(s => s.Name == booster);
             
         }
     }

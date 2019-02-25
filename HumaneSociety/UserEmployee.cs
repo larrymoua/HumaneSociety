@@ -169,6 +169,7 @@ namespace HumaneSociety
                 if(UserInterface.GetBitData("Would you like to Update shots?"))
                 {
                     Query.UpdateShot("booster", animal);
+                    //update shot that equals the string and change the date recieved
                 }
             }
             else
@@ -176,6 +177,7 @@ namespace HumaneSociety
                 if (UserInterface.GetBitData("Would you like to Update shots?"))
                 {
                     Query.UpdateShot("booster", animal);
+                    //add new shot with the name and date recieved for the animalId
                 }
             }
             
@@ -246,7 +248,7 @@ namespace HumaneSociety
         private void AddAnimal()
         {
             Console.Clear();
-            Animal animal = new Animal();
+            Animal animal = new Animal();           
             string categoryName;
             categoryName = UserInterface.GetStringData("category", "the animal's");
             animal.CategoryId = Query.GetCategoryId(categoryName);
@@ -258,6 +260,16 @@ namespace HumaneSociety
             animal.Weight = UserInterface.GetIntegerData("the animal", "the weight of the");
             animal.DietPlanId = Query.GetDietPlanId();
             Query.AddAnimal(animal);
+        }
+        private void AddNewDietPlan()
+        {
+            Console.Clear();
+            DietPlan dietPlan = new DietPlan();
+            dietPlan.Name = UserInterface.GetStringData("name", "the new diet plan's");
+            dietPlan.FoodType = UserInterface.GetStringData("food type", "the new diet plan's");
+            dietPlan.FoodAmountInCups = UserInterface.GetIntegerData("amount of food in cups", "the new diet plan's");
+
+            Query.AddDietPlan(dietPlan);
         }
         protected override void LogInPreExistingUser()
         {
