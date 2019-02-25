@@ -86,7 +86,7 @@ namespace HumaneSociety
             UserInterface.DisplayUserOptions("Would you approve this adoption?");
             if ((bool)UserInterface.GetBitData())
             {
-                Query.UpdateAdoption(true, adoption);
+                Query.UpdateAdoption(true, adoption);                  
             }
             else
             {
