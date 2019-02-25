@@ -320,9 +320,44 @@ namespace HumaneSociety
             db.SubmitChanges();
 
         }
-        internal static void EnterAnimalUpdate(Animal animal, Dictionary<int,string> updates)
+        internal static void EnterAnimalUpdate(Animal animal, Dictionary<int, string> updates)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            Animal updateAnimal = db.Animals.Where(a => a.AnimalId == animal.AnimalId).Single();
+
+
+            foreach (KeyValuePair<int, string> entry in updates)
+            {
+             
+                switch (entry.Key)
+                {
+                    case 1:
+                        updateAnimal.CategoryId = Convert.ToInt32(entry.Value);
+                        break;
+                    case 2:
+                        updateAnimal.Name = entry.Value;
+                        break;
+                    case 3:
+                        updateAnimal.Age = Convert.ToInt32(entry.Value);
+                        break;
+                    case 4:
+                        updateAnimal.Demeanor = entry.Value;
+                        break;
+                    case 5:
+                        updateAnimal.KidFriendly = Convert.ToBoolean(entry.Value);
+                        break;
+                    case 6:
+                        updateAnimal.PetFriendly = Convert.ToBoolean(entry.Value);
+                        break;
+                    case 7:
+                        updateAnimal.Weight = Convert.ToInt32(entry.Value);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            db.SubmitChanges();
         }
         internal static Animal GetAnimalByID(int id)
         {
@@ -335,6 +370,7 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            
             var dietPlanId = db.Animals.Select(d => d.DietPlanId);
            
             return Convert.ToInt32(dietPlanId);
@@ -374,7 +410,7 @@ namespace HumaneSociety
       
         internal static void RunEmployeeQueries(Employee employee, string updated)
         {
-
+            //switch case add , remove, delete, read, upda
         }
         internal static void UpdateAdoption(bool trueOrFalse, Adoption adoption)
         {
@@ -392,14 +428,15 @@ namespace HumaneSociety
                 adoption.Animal.AdoptionStatus = "not adopted";
 
             }
-        }
-
-    }
+        }  
         internal static void UpdateShot(string booster, Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             var updatedShot = db.Shots.Where(s => s.Name == booster);
+            
+        
         }
+
     }
 }

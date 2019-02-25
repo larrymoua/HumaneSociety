@@ -10,11 +10,14 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
-            //HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //Animal cat = db.Animals.Where(a => a.AnimalId == 17).Single();
-            //Query.GetAnimalByID(18);     
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-            Query.SearchForAnimalByMultipleTraits();
+            Adoption cat = db.Adoptions.Where(a => a.ClientId == 3).Single();
+            DietPlan dietPlan = new DietPlan();
+            dietPlan.Name = "hi";
+            
+
+            Query.UpdateDietPlan(dietPlan);
         }
     }
 }
