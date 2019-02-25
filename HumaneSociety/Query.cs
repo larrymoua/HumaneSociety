@@ -137,7 +137,18 @@ namespace HumaneSociety
             // submit changes
             db.SubmitChanges();
         }
+        internal static void UpdateDietPlan(DietPlan planWithUpdates)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            DietPlan planFromDb = db.DietPlans.Where(d => d.DietPlanId == planWithUpdates.DietPlanId).Single();
+
+            planFromDb.Name = planWithUpdates.Name;
+            planFromDb.FoodType = planWithUpdates.FoodType;
+            planFromDb.FoodAmountInCups = planWithUpdates.FoodAmountInCups;
+
+            db.SubmitChanges();
+        }
         internal static Employee RetrieveEmployeeUser(string email, int employeeNumber)
         {
             HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
@@ -331,18 +342,20 @@ namespace HumaneSociety
             { 
                 adoption.ApprovalStatus = "approved";
                 adoption.Animal.AdoptionStatus = "adopted";
+                adoption.PaymentCollected = true;
             }
             else
             {
                 adoption.ApprovalStatus = "denied";
                 adoption.Animal.AdoptionStatus = "not adopted";
+               
             }
         }
         internal static void UpdateShot(string booster, Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-            
+            var updatedShot = db.Shots.Where(s => s.Name == booster);
         }
     }
 }

@@ -223,7 +223,7 @@ namespace HumaneSociety
         }       
 
         private void RemoveAnimal()
-        {            
+        {
             var animals = Query.SearchForAnimalByMultipleTraits().ToList();
             if (animals.Count > 1)
             {
@@ -289,8 +289,7 @@ namespace HumaneSociety
                 Console.Clear();
                 UserInterface.DisplayUserOptions("Employee not found, please try again, create a new user or contact your administrator");
                 LogIn();
-            }
-            
+            }            
         }
         private void CreateNewEmployee()
         {
