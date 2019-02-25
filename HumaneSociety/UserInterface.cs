@@ -218,6 +218,7 @@ namespace HumaneSociety
                     UserInterface.DisplayUserOptions("Input not recognized please try agian");
                     return searchParameters;
             }
+
         }
     }
 }
