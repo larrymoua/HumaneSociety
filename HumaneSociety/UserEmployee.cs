@@ -175,9 +175,7 @@ namespace HumaneSociety
                     year = UserInterface.GetIntegerData("year (YYYY)", "updated shot's");
                     month = UserInterface.GetIntegerData("month (MM)", "updated shot's");
                     day = UserInterface.GetIntegerData("day (DD)", "updated shot's");
-                    Query.UpdateShot(updatedShot, animal, year, month, day);
-                    //Query.UpdateShot("booster", animal);
-                    //update shot that equals the string and change the date recieved
+                    Query.UpdateShot(updatedShot, animal, year, month, day);                 
                 }
             }
             else
@@ -191,8 +189,7 @@ namespace HumaneSociety
                     year = UserInterface.GetIntegerData("year (YYYY)", "updated shot's");
                     month = UserInterface.GetIntegerData("month (MM)", "updated shot's");
                     day = UserInterface.GetIntegerData("day (DD)", "updated shot's");
-                    Query.UpdateShot(updatedShot, animal, year, month, day);
-                    //add new shot with the name and date recieved for the animalId
+                    Query.UpdateShot(updatedShot, animal, year, month, day);                   
                 }
             }
             

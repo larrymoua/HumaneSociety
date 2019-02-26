@@ -410,7 +410,7 @@ namespace HumaneSociety
       
         internal static void RunEmployeeQueries(Employee employee, string updated)
         {
-            
+            //switch case add , remove, delete, read, upda
         }
         internal static void UpdateAdoption(bool trueOrFalse, Adoption adoption)
         {

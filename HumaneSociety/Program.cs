@@ -10,15 +10,7 @@ namespace HumaneSociety
     {
         static void Main(string[] args)
         {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
-            Adoption cat = db.Adoptions.Where(a => a.ClientId == 3).Single();
-            //DietPlan dietPlan = new DietPlan();
-            //dietPlan.Name = "hi";
-
-            //Query.UpdateDietPlan(dietPlan);
-
-            //PointOfEntry.Run();
+            
         }
     }
 }
