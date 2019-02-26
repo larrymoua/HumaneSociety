@@ -83,6 +83,10 @@ namespace HumaneSociety
                 return false;
             }
         }
+        internal static void DisplayEmployee(Employee employee)
+        {
+            Console.WriteLine(employee.FirstName + " " + employee.LastName + " " + employee.UserName + " " + employee.Password + " " + employee.Password + " " + employee.EmployeeNumber + " " + employee.Email);
+        }
 
         internal static void DisplayAnimals(List<Animal> animals)
         {

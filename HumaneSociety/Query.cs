@@ -206,6 +206,7 @@ namespace HumaneSociety
             newAnimal.KidFriendly = animal.KidFriendly;
             newAnimal.PetFriendly = animal.PetFriendly;
             newAnimal.Weight = animal.Weight;
+            newAnimal.CategoryId = animal.CategoryId;
 
             db.Animals.InsertOnSubmit(newAnimal);
             db.SubmitChanges();
@@ -366,14 +367,13 @@ namespace HumaneSociety
 
             return animal; 
         }
-        internal static int GetDietPlanId()
+        internal static int GetDietPlanId(string dietPlanName)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
-            
-            var dietPlanId = db.Animals.Select(d => d.DietPlanId);
            
-            return Convert.ToInt32(dietPlanId);
+            var dietPlanId = db.DietPlans.Where(d => d.Name == dietPlanName).Single();
+           
+            return dietPlanId.DietPlanId;
         }
 
         internal static List<Adoption> GetPendingAdoptions()
@@ -410,7 +410,29 @@ namespace HumaneSociety
       
         internal static void RunEmployeeQueries(Employee employee, string updated)
         {
-            //switch case add , remove, delete, read, upda
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            Employee findEmployee;
+            switch (updated)
+            {
+                case "create":
+                    db.Employees.InsertOnSubmit(employee);
+                    break;
+                case "delete":
+                    db.Employees.DeleteOnSubmit(db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName).Single());
+                    break;
+                case "read":
+                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
+                    UserInterface.DisplayEmployee(findEmployee);
+                    break;
+                case "update":
+                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
+                    findEmployee = employee;                  
+                    break;
+                default:
+                    break;
+            }
+
+            db.SubmitChanges();
         }
         internal static void UpdateAdoption(bool trueOrFalse, Adoption adoption)
         {
