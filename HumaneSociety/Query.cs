@@ -141,11 +141,10 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-            DietPlan planFromDb = db.DietPlans.Where(d => d.DietPlanId == planWithUpdates.DietPlanId).Single();
 
-            planFromDb.Name = planWithUpdates.Name;
-            planFromDb.FoodType = planWithUpdates.FoodType;
-            planFromDb.FoodAmountInCups = planWithUpdates.FoodAmountInCups;
+            planWithUpdates.Name = UserInterface.GetStringData("the diet plan's", "name");
+            planWithUpdates.FoodType = UserInterface.GetStringData("the diet plan's", "food type");
+            planWithUpdates.FoodAmountInCups = UserInterface.GetIntegerData("the diet plan's", "amount of food in cups");
 
             db.SubmitChanges();
         }
@@ -370,9 +369,9 @@ namespace HumaneSociety
         internal static int GetDietPlanId(string dietPlanName)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-           
+
             var dietPlanId = db.DietPlans.Where(d => d.Name == dietPlanName).Single();
-           
+
             return dietPlanId.DietPlanId;
         }
 
@@ -443,12 +442,14 @@ namespace HumaneSociety
                 adoption.ApprovalStatus = "approved";
                 adoption.Animal.AdoptionStatus = "adopted";
                 adoption.PaymentCollected = true;
+
+                db.SubmitChanges();
             }
             else
             {
                 adoption.ApprovalStatus = "denied";
                 adoption.Animal.AdoptionStatus = "not adopted";
-
+               
             }
         }  
         internal static void UpdateShot(string booster, Animal animal)
