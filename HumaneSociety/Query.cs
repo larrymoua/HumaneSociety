@@ -335,30 +335,36 @@ namespace HumaneSociety
                 {
                     case 1:
                         updateAnimal.CategoryId = Convert.ToInt32(entry.Value);
+                        db.SubmitChanges();
                         break;
                     case 2:
                         updateAnimal.Name = entry.Value;
+                        db.SubmitChanges();
                         break;
                     case 3:
                         updateAnimal.Age = Convert.ToInt32(entry.Value);
+                        db.SubmitChanges();
                         break;
                     case 4:
                         updateAnimal.Demeanor = entry.Value;
+                        db.SubmitChanges();
                         break;
                     case 5:
                         updateAnimal.KidFriendly = Convert.ToBoolean(entry.Value);
+                        db.SubmitChanges();
                         break;
                     case 6:
                         updateAnimal.PetFriendly = Convert.ToBoolean(entry.Value);
+                        db.SubmitChanges();
                         break;
                     case 7:
                         updateAnimal.Weight = Convert.ToInt32(entry.Value);
+                        db.SubmitChanges();
                         break;
                     default:
                         break;
                 }
             }
-            db.SubmitChanges();
         }
         internal static Animal GetAnimalByID(int id)
         {
@@ -410,7 +416,29 @@ namespace HumaneSociety
       
         internal static void RunEmployeeQueries(Employee employee, string updated)
         {
-            //switch case add , remove, delete, read, upda
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            Employee findEmployee;
+            switch (updated)
+            {
+                case "create":
+                    db.Employees.InsertOnSubmit(employee);
+                    break;
+                case "delete":
+                    db.Employees.DeleteOnSubmit(db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName).Single());
+                    break;
+                case "read":
+                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
+                    UserInterface.DisplayEmployee(findEmployee);
+                    break;
+                case "update":
+                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
+                    findEmployee = employee;                  
+                    break;
+                default:
+                    break;
+            }
+
+            db.SubmitChanges();
         }
         internal static void UpdateAdoption(bool trueOrFalse, Adoption adoption)
         {

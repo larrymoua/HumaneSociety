@@ -134,7 +134,8 @@ namespace HumaneSociety
 
         private void RunCheckMenuInput(int input, Animal animal)
         {
-            
+            Dictionary <int ,string>dictionary = new Dictionary<int, string>();
+
             switch (input)
             {
                 case 1:
@@ -142,7 +143,7 @@ namespace HumaneSociety
                     Console.Clear();
                     return;
                 case 2:
-                    UpdateAnimal(animal);
+                    UpdateAnimal(animal, dictionary);
                     Console.Clear();
                     return;
                 case 3:
@@ -195,7 +196,7 @@ namespace HumaneSociety
             
         }
 
-        private void UpdateAnimal(Animal animal, Dictionary<int, string> updates = null)
+        private void UpdateAnimal(Animal animal, Dictionary<int, string> updates )
         {
             if(updates == null)
             {
@@ -210,8 +211,8 @@ namespace HumaneSociety
             }
             else
             {
-                updates = UserInterface.EnterSearchCriteria(updates, input);
-                UpdateAnimal(animal);
+                updates = UserInterface.EnterUpdate(updates, input);             
+                UpdateAnimal(animal, updates);
             }
         }
 
