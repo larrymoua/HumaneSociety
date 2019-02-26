@@ -88,8 +88,6 @@ namespace HumaneSociety
             {
 
             }
-      
-
             var animal = Query.GetAnimalByID(iD);
             UserInterface.DisplayAnimalInfo(animal);
             if(animal.AdoptionStatus == "not adopted")

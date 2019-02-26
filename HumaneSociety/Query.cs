@@ -334,30 +334,36 @@ namespace HumaneSociety
                 {
                     case 1:
                         updateAnimal.CategoryId = Convert.ToInt32(entry.Value);
+                        db.SubmitChanges();
                         break;
                     case 2:
                         updateAnimal.Name = entry.Value;
+                        db.SubmitChanges();
                         break;
                     case 3:
                         updateAnimal.Age = Convert.ToInt32(entry.Value);
+                        db.SubmitChanges();
                         break;
                     case 4:
                         updateAnimal.Demeanor = entry.Value;
+                        db.SubmitChanges();
                         break;
                     case 5:
                         updateAnimal.KidFriendly = Convert.ToBoolean(entry.Value);
+                        db.SubmitChanges();
                         break;
                     case 6:
                         updateAnimal.PetFriendly = Convert.ToBoolean(entry.Value);
+                        db.SubmitChanges();
                         break;
                     case 7:
                         updateAnimal.Weight = Convert.ToInt32(entry.Value);
+                        db.SubmitChanges();
                         break;
                     default:
                         break;
                 }
             }
-            db.SubmitChanges();
         }
         internal static Animal GetAnimalByID(int id)
         {
@@ -417,15 +423,22 @@ namespace HumaneSociety
                     db.Employees.InsertOnSubmit(employee);
                     break;
                 case "delete":
-                    db.Employees.DeleteOnSubmit(db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName).Single());
+                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName).Single();
+                    var foundAnimal = db.Animals.Where(a => a.EmployeeId == findEmployee.EmployeeId);
+                    foreach (Animal animal in foundAnimal)
+                    {
+                        animal.EmployeeId = null;
+                        db.SubmitChanges();
+                    }
+                    db.Employees.DeleteOnSubmit(db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName).Single());                  
                     break;
                 case "read":
                     findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
                     UserInterface.DisplayEmployee(findEmployee);
                     break;
                 case "update":
-                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
-                    findEmployee = employee;                  
+                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber || e.FirstName == employee.FirstName || e.LastName == employee.LastName).Single();
+                    UserInterface.UpdateEmployee(findEmployee);
                     break;
                 default:
                     break;

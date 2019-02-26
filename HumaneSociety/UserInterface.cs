@@ -85,7 +85,8 @@ namespace HumaneSociety
         }
         internal static void DisplayEmployee(Employee employee)
         {
-            Console.WriteLine(employee.FirstName + " " + employee.LastName + " " + employee.UserName + " " + employee.Password + " " + employee.Password + " " + employee.EmployeeNumber + " " + employee.Email);
+            Console.WriteLine("First name :" + employee.FirstName + "\nLast name :" + employee.LastName + "\nUser name :" + employee.UserName + "\nPassword :" + employee.Password + "\nEmployee number :" + employee.EmployeeNumber + "\nEmail :" + employee.Email);
+            Console.ReadLine();
         }
 
         internal static void DisplayAnimals(List<Animal> animals)
@@ -222,7 +223,67 @@ namespace HumaneSociety
                     UserInterface.DisplayUserOptions("Input not recognized please try agian");
                     return searchParameters;
             }
-
         }
+        public static Dictionary<int, string> EnterUpdate(Dictionary<int, string> searchParameters, string input)
+        {
+            Console.Clear();
+            switch (input)
+            {
+                case "1":
+                    searchParameters.Add(1, UserInterface.GetStringData("new category", "the animal's"));
+                    return searchParameters;
+                case "2":
+                    searchParameters.Add(2, UserInterface.GetStringData("new name", "the animal's"));
+                    return searchParameters;
+                case "3":
+                    searchParameters.Add(3, UserInterface.GetIntegerData("new age", "the animal's").ToString());
+                    return searchParameters;
+                case "4":
+                    searchParameters.Add(4, UserInterface.GetStringData("new demeanor", "the animal's"));
+                    return searchParameters;
+                case "5":
+                    searchParameters.Add(5, UserInterface.GetBitData("the animal", "kid friendly").ToString());
+                    return searchParameters;
+                case "6":
+                    searchParameters.Add(6, UserInterface.GetBitData("the animal", "pet friendly").ToString());
+                    return searchParameters;
+                case "7":
+                    searchParameters.Add(7, UserInterface.GetIntegerData("new weight", "the animal's").ToString());
+                    return searchParameters;
+                default:
+                    UserInterface.DisplayUserOptions("Input not recognized please try agian");
+                    return searchParameters;
+            }
+        }
+        public static Employee UpdateEmployee(Employee employee)
+        {
+            List<string> options = new List<string>() { "Select Criteia: (Enter number or property)", "1. firstname", "2. lastname", "3. username", "4. password", "5. employeenumber", "6. email" };
+            DisplayUserOptions(options);
+            string input = GetStringData("you want to update","the criteria");
+            switch (input.ToLower())
+            {
+                case "firstname":
+                    employee.FirstName = GetStringData("to firstname","the update");
+                    break;
+                case "lastname":
+                    employee.LastName = GetStringData("to lastname","the update");
+                    break;
+                case "username":
+                    employee.UserName = GetStringData("to username","the update");
+                    break;
+                case "password":
+                    employee.Password = GetStringData("to password","the update");
+                    break;
+                case "employeenumber":
+                    employee.EmployeeNumber = GetIntegerData("to employeenumber", "the update");
+                    break;
+                case "email":
+                    employee.Email = GetStringData("to email","the update");
+                    break;
+                default:
+                    break;
+            }
+            return employee;
+        }         
     }
 }
