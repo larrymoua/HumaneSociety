@@ -19,6 +19,7 @@ namespace HumaneSociety
         {
             Console.WriteLine(options);
         }
+        
         public static string GetUserInput()
         {
             string input = Console.ReadLine();

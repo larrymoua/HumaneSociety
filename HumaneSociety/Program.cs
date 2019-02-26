@@ -13,11 +13,12 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             Adoption cat = db.Adoptions.Where(a => a.ClientId == 3).Single();
-            DietPlan dietPlan = new DietPlan();
-            dietPlan.Name = "hi";
-            
+            //DietPlan dietPlan = new DietPlan();
+            //dietPlan.Name = "hi";
 
-            Query.UpdateDietPlan(dietPlan);
+            //Query.UpdateDietPlan(dietPlan);
+
+            //PointOfEntry.Run();
         }
     }
 }

@@ -168,7 +168,15 @@ namespace HumaneSociety
                 UserInterface.DisplayUserOptions(shotInfo);
                 if(UserInterface.GetBitData("Would you like to Update shots?"))
                 {
-                    Query.UpdateShot("booster", animal);
+                    int year;
+                    int month;
+                    int day;
+                    string updatedShot = UserInterface.GetStringData("name", "updated shot's");
+                    year = UserInterface.GetIntegerData("year (YYYY)", "updated shot's");
+                    month = UserInterface.GetIntegerData("month (MM)", "updated shot's");
+                    day = UserInterface.GetIntegerData("day (DD)", "updated shot's");
+                    Query.UpdateShot(updatedShot, animal, year, month, day);
+                    //Query.UpdateShot("booster", animal);
                     //update shot that equals the string and change the date recieved
                 }
             }
@@ -176,7 +184,14 @@ namespace HumaneSociety
             {
                 if (UserInterface.GetBitData("Would you like to Update shots?"))
                 {
-                    Query.UpdateShot("booster", animal);
+                    int year;
+                    int month;
+                    int day;
+                    string updatedShot = UserInterface.GetStringData("name", "updated shot's");
+                    year = UserInterface.GetIntegerData("year (YYYY)", "updated shot's");
+                    month = UserInterface.GetIntegerData("month (MM)", "updated shot's");
+                    day = UserInterface.GetIntegerData("day (DD)", "updated shot's");
+                    Query.UpdateShot(updatedShot, animal, year, month, day);
                     //add new shot with the name and date recieved for the animalId
                 }
             }
@@ -192,7 +207,7 @@ namespace HumaneSociety
             List<string> options = new List<string>() { "Select Updates: (Enter number and choose finished when finished)", "1. Category", "2. Name", "3. Age", "4. Demeanor", "5. Kid friendly", "6. Pet friendly", "7. Weight", "8. Finished" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
-            if(input.ToLower() == "9" ||input.ToLower() == "finished")
+            if(input.ToLower() == "8" ||input.ToLower() == "finished")
             {
                 Query.EnterAnimalUpdate(animal, updates);
             }

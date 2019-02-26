@@ -34,28 +34,29 @@ namespace HumaneSociety
         }
         protected void RunInput(string input)
         {
-            if(input == "1" || input.ToLower() == "create")
-            {
-                Crud add = new Crud(AddEmployee);
-                add();
+            Crud crudDelegate;
+            if (input == "1" || input.ToLower() == "create")
+            {               
+                crudDelegate = AddEmployee;
+                crudDelegate();
                 RunUserMenus();
             }
             else if(input == "2" || input.ToLower() == "delete")
             {
-                Crud remove = new Crud(RemoveEmployee);
-                remove();
+                crudDelegate = RemoveEmployee;
+                crudDelegate();
                 RunUserMenus();
             }
             else if(input == "3" || input.ToLower() == "read")
             {
-                Crud Read = new Crud(ReadEmployee);
-                Read();
+                crudDelegate = ReadEmployee;
+                crudDelegate();
                 RunUserMenus();
             }
             else if (input == "4" || input.ToLower() == "update")
             {
-                Crud update = new Crud(UpdateEmployee);
-                update();
+                crudDelegate = UpdateEmployee;
+                crudDelegate();
                 RunUserMenus();
             }
             else
@@ -70,7 +71,7 @@ namespace HumaneSociety
             Employee employee = new Employee();
             employee.FirstName = UserInterface.GetStringData("first name", "the employee's");
             employee.LastName = UserInterface.GetStringData("last name", "the employee's");
-            employee.EmployeeId = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
+            employee.EmployeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
             employee.Email = UserInterface.GetStringData("email", "the employee's");
             try
             {

@@ -20,6 +20,7 @@ namespace HumaneSociety
                 db.Categories.InsertOnSubmit(newCategory);
                 db.SubmitChanges();
             }
+                    
             return category.CategoryId;
         }
 
@@ -205,6 +206,7 @@ namespace HumaneSociety
             newAnimal.KidFriendly = animal.KidFriendly;
             newAnimal.PetFriendly = animal.PetFriendly;
             newAnimal.Weight = animal.Weight;
+            newAnimal.CategoryId = animal.CategoryId;
 
             db.Animals.InsertOnSubmit(newAnimal);
             db.SubmitChanges();
@@ -367,9 +369,11 @@ namespace HumaneSociety
         }
         internal static int GetDietPlanId(string dietPlanName)
         {
-            HumaneSocietyDataContext db = new HumaneSocietyDataContext();            
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-         
+            var dietPlan = db.DietPlans.Where(d => d.Name == dietPlanName).Single();
+
+            return dietPlan.DietPlanId;
         }
 
         internal static List<Adoption> GetPendingAdoptions()
@@ -406,7 +410,7 @@ namespace HumaneSociety
       
         internal static void RunEmployeeQueries(Employee employee, string updated)
         {
-            //switch case add , remove, delete, read, upda
+            
         }
         internal static void UpdateAdoption(bool trueOrFalse, Adoption adoption)
         {
@@ -424,16 +428,33 @@ namespace HumaneSociety
             {
                 adoption.ApprovalStatus = "denied";
                 adoption.Animal.AdoptionStatus = "not adopted";
-               
+
+                db.SubmitChanges();
             }
         }  
-        internal static void UpdateShot(string booster, Animal animal)
+        internal static void UpdateShot(string booster, Animal animal, int year, int month, int day)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
-            var updatedShot = db.Shots.Where(s => s.Name == booster);
+            Shot shot = new Shot();
+            AnimalShot animalShot = new AnimalShot();
+            DateTime updatedDate = new DateTime(year, month, day);
             
-        
+            shot = db.Shots.Where(s => s.Name == booster).Single();
+            if (shot == null)
+            {
+                shot.Name = booster;
+
+                db.Shots.InsertOnSubmit(shot);
+                db.SubmitChanges();
+            }
+            animalShot.AnimalId = animal.AnimalId;
+            animalShot.ShotId = shot.ShotId;
+            shot.Name = booster;
+            animalShot.DateReceived = updatedDate;
+
+            db.AnimalShots.InsertOnSubmit(animalShot);
+
+            db.SubmitChanges();
         }
 
     }
