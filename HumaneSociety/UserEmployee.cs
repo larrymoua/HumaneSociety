@@ -166,7 +166,7 @@ namespace HumaneSociety
             if(shotInfo.Count > 0)
             {
                 UserInterface.DisplayUserOptions(shotInfo);
-                if(UserInterface.GetBitData("Would you like to Update shots?"))
+                if(UserInterface.GetBitData("Would you like to update shot?"))
                 {
                     int year;
                     int month;

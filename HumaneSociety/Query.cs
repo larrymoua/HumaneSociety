@@ -432,29 +432,31 @@ namespace HumaneSociety
                 db.SubmitChanges();
             }
         }  
-        internal static void UpdateShot(string booster, Animal animal, int year, int month, int day)
+        internal static void UpdateShot(string inputName, Animal animal, int year, int month, int day)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             Shot shot = new Shot();
             AnimalShot animalShot = new AnimalShot();
             DateTime updatedDate = new DateTime(year, month, day);
             
-            shot = db.Shots.Where(s => s.Name == booster).Single();
+            shot = db.Shots.Where(s => s.Name == inputName).Single();
             if (shot == null)
             {
-                shot.Name = booster;
+                animalShot.AnimalId = animal.AnimalId;
+                animalShot.ShotId = shot.ShotId;
+                shot.Name = inputName;
+                animalShot.DateReceived = updatedDate;
+
+                db.AnimalShots.InsertOnSubmit(animalShot);
 
                 db.Shots.InsertOnSubmit(shot);
                 db.SubmitChanges();
             }
-            animalShot.AnimalId = animal.AnimalId;
-            animalShot.ShotId = shot.ShotId;
-            shot.Name = booster;
-            animalShot.DateReceived = updatedDate;
-
-            db.AnimalShots.InsertOnSubmit(animalShot);
-
-            db.SubmitChanges();
+            else if (shot.Name == inputName)
+            {
+                animalShot.DateReceived = updatedDate;
+                db.SubmitChanges();
+            }           
         }
 
     }
