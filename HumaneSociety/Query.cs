@@ -20,6 +20,7 @@ namespace HumaneSociety
                 db.Categories.InsertOnSubmit(newCategory);
                 db.SubmitChanges();
             }
+                    
             return category.CategoryId;
         }
 
@@ -376,9 +377,9 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-            var dietPlanId = db.DietPlans.Where(d => d.Name == dietPlanName).Single();
+            var dietPlan = db.DietPlans.Where(d => d.Name == dietPlanName).Single();
 
-            return dietPlanId.DietPlanId;
+            return dietPlan.DietPlanId;
         }
 
         internal static List<Adoption> GetPendingAdoptions()
@@ -423,22 +424,15 @@ namespace HumaneSociety
                     db.Employees.InsertOnSubmit(employee);
                     break;
                 case "delete":
-                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName).Single();
-                    var foundAnimal = db.Animals.Where(a => a.EmployeeId == findEmployee.EmployeeId);
-                    foreach (Animal animal in foundAnimal)
-                    {
-                        animal.EmployeeId = null;
-                        db.SubmitChanges();
-                    }
-                    db.Employees.DeleteOnSubmit(db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName).Single());                  
+                    db.Employees.DeleteOnSubmit(db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName).Single());
                     break;
                 case "read":
                     findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
                     UserInterface.DisplayEmployee(findEmployee);
                     break;
                 case "update":
-                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber || e.FirstName == employee.FirstName || e.LastName == employee.LastName).Single();
-                    UserInterface.UpdateEmployee(findEmployee);
+                    findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
+                    findEmployee = employee;                  
                     break;
                 default:
                     break;
@@ -462,16 +456,33 @@ namespace HumaneSociety
             {
                 adoption.ApprovalStatus = "denied";
                 adoption.Animal.AdoptionStatus = "not adopted";
-               
+
+                db.SubmitChanges();
             }
         }  
-        internal static void UpdateShot(string booster, Animal animal)
+        internal static void UpdateShot(string booster, Animal animal, int year, int month, int day)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
-            var updatedShot = db.Shots.Where(s => s.Name == booster);
+            Shot shot = new Shot();
+            AnimalShot animalShot = new AnimalShot();
+            DateTime updatedDate = new DateTime(year, month, day);
             
-        
+            shot = db.Shots.Where(s => s.Name == booster).Single();
+            if (shot == null)
+            {
+                shot.Name = booster;
+
+                db.Shots.InsertOnSubmit(shot);
+                db.SubmitChanges();
+            }
+            animalShot.AnimalId = animal.AnimalId;
+            animalShot.ShotId = shot.ShotId;
+            shot.Name = booster;
+            animalShot.DateReceived = updatedDate;
+
+            db.AnimalShots.InsertOnSubmit(animalShot);
+
+            db.SubmitChanges();
         }
 
     }

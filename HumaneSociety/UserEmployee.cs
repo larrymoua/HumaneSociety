@@ -169,16 +169,28 @@ namespace HumaneSociety
                 UserInterface.DisplayUserOptions(shotInfo);
                 if(UserInterface.GetBitData("Would you like to Update shots?"))
                 {
-                    Query.UpdateShot("booster", animal);
-                    //update shot that equals the string and change the date recieved
+                    int year;
+                    int month;
+                    int day;
+                    string updatedShot = UserInterface.GetStringData("name", "updated shot's");
+                    year = UserInterface.GetIntegerData("year (YYYY)", "updated shot's");
+                    month = UserInterface.GetIntegerData("month (MM)", "updated shot's");
+                    day = UserInterface.GetIntegerData("day (DD)", "updated shot's");
+                    Query.UpdateShot(updatedShot, animal, year, month, day);                 
                 }
             }
             else
             {
                 if (UserInterface.GetBitData("Would you like to Update shots?"))
                 {
-                    Query.UpdateShot("booster", animal);
-                    //add new shot with the name and date recieved for the animalId
+                    int year;
+                    int month;
+                    int day;
+                    string updatedShot = UserInterface.GetStringData("name", "updated shot's");
+                    year = UserInterface.GetIntegerData("year (YYYY)", "updated shot's");
+                    month = UserInterface.GetIntegerData("month (MM)", "updated shot's");
+                    day = UserInterface.GetIntegerData("day (DD)", "updated shot's");
+                    Query.UpdateShot(updatedShot, animal, year, month, day);                   
                 }
             }
             
