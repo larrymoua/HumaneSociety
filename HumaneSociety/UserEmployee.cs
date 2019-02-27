@@ -202,10 +202,10 @@ namespace HumaneSociety
             {
                 updates = new Dictionary<int, string>();
             }
-            List<string> options = new List<string>() { "Select Updates: (Enter number and choose finished when finished)", "1. Category", "2. Name", "3. Age", "4. Demeanor", "5. Kid friendly", "6. Pet friendly", "7. Weight", "8. Room" ,"9. Finished" };
+            List<string> options = new List<string>() { "Select Updates: (Enter number and choose finished when finished)", "1. Category", "2. Name", "3. Age", "4. Demeanor", "5. Kid friendly", "6. Pet friendly", "7. Weight", "8. Room" ,"9. Dietplan", "10. Finished" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
-            if(input.ToLower() == "9" ||input.ToLower() == "finished")
+            if(input.ToLower() == "10" ||input.ToLower() == "finished")
             {
                 Query.EnterAnimalUpdate(animal, updates);
             }
@@ -265,7 +265,7 @@ namespace HumaneSociety
             string categoryName;
             string dietPlanName;
             categoryName = UserInterface.GetStringData("category", "the animal's");
-            animal.CategoryId = Query.GetCategoryId(categoryName);
+            animal.CategoryId = Query.GetCategoryId(categoryName.ToLower());
             animal.Name = UserInterface.GetStringData("name", "the animal's");
             animal.Age = UserInterface.GetIntegerData("age", "the animal's");
             animal.Demeanor = UserInterface.GetStringData("demeanor", "the animal's");
@@ -274,8 +274,10 @@ namespace HumaneSociety
             animal.Weight = UserInterface.GetIntegerData("the animal", "the weight of the");
             dietPlanName = UserInterface.GetStringData("diet plan name", "the animal's");
             animal.DietPlanId = Query.GetDietPlanId(dietPlanName);
+            animal.Gender = UserInterface.GetStringData("gender" , "the animal's");
             Query.AddAnimal(animal);
-            Query.GetRoom(0);
+            animal = Query.RetrieveUpdatedAnimal(animal);
+            Query.GetRoom(animal.AnimalId);
             
         }
         private void AddNewDietPlan()

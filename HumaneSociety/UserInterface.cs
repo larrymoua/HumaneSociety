@@ -86,6 +86,7 @@ namespace HumaneSociety
         }
         internal static void DisplayEmployee(Employee employee)
         {
+            employee = Query.QueryForUpdatedEmployee(employee);
             Console.WriteLine("First name :" + employee.FirstName + "\nLast name :" + employee.LastName + "\nUser name :" + employee.UserName + "\nPassword :" + employee.Password + "\nEmployee number :" + employee.EmployeeNumber + "\nEmail :" + employee.Email);
             Console.ReadLine();
         }
@@ -94,7 +95,7 @@ namespace HumaneSociety
         {
             foreach(Animal animal in animals)
             {
-                Console.WriteLine(animal.AnimalId + " " + animal.Name + " " + animal.Category.Name);
+                Console.WriteLine("Animal ID :"+ animal.AnimalId + "\tAnimal's name: " + animal.Name + "\tAnimal's category: " + animal.Category.Name);
             }
         }
 
@@ -137,8 +138,9 @@ namespace HumaneSociety
 
         public static void DisplayAnimalInfo(Animal animal)
         {
+            Query.RetrieveUpdatedAnimal(animal);
             Room animalRoom = Query.GetRoom(animal.AnimalId);
-            List<string> info = new List<string>() {"ID: " + animal.AnimalId, animal.Name, animal.Age + "years old", "Demeanour: " + animal.Demeanor, "Kid friendly: " + BoolToYesNo(animal.KidFriendly), "pet friendly: " + BoolToYesNo(animal.PetFriendly), $"Location: " + animalRoom.RoomId, "Weight: " + animal.Weight.ToString(),  "Food amoumnt in cups:" + animal.DietPlan.FoodAmountInCups};
+            List<string> info = new List<string>() {"ID: " + animal.AnimalId, animal.Name, animal.Age + "years old", "Demeanour: " + animal.Demeanor, "Kid friendly: " + BoolToYesNo(animal.KidFriendly), "pet friendly: " + BoolToYesNo(animal.PetFriendly), $"Location: " + animalRoom.RoomNumber, "Weight: " + animal.Weight.ToString(),  "Food amoumnt in cups:" + animal.DietPlan.FoodAmountInCups};
             DisplayUserOptions(info);
             Console.ReadLine();
 
@@ -253,6 +255,9 @@ namespace HumaneSociety
                     return searchParameters;
                 case "8":
                     searchParameters.Add(8, UserInterface.GetIntegerData("new room number", "the animal's").ToString());
+                    return searchParameters;
+                case "9":
+                    searchParameters.Add(9, UserInterface.GetStringData("new diet plan name", "the animal's"));
                     return searchParameters;
                 default:
                     UserInterface.DisplayUserOptions("Input not recognized please try agian");
