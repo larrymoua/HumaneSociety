@@ -251,6 +251,9 @@ namespace HumaneSociety
                 case "7":
                     searchParameters.Add(7, UserInterface.GetIntegerData("new weight", "the animal's").ToString());
                     return searchParameters;
+                case "8":
+                    searchParameters.Add(8, UserInterface.GetIntegerData("new room number", "the animal's").ToString());
+                    return searchParameters;
                 default:
                     UserInterface.DisplayUserOptions("Input not recognized please try agian");
                     return searchParameters;

@@ -20,13 +20,13 @@ namespace HumaneSociety
                 db.Categories.InsertOnSubmit(newCategory);
                 db.SubmitChanges();
             }
-                    
+
             return category.CategoryId;
         }
 
         internal static List<USState> GetStates()
         {
-             HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             List<USState> allStates = db.USStates.ToList();
 
@@ -34,10 +34,16 @@ namespace HumaneSociety
         }
         internal static void RemoveAnimal(Animal animal)
         {
-            
+
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             animal = db.Animals.Where(a => a.AnimalId == animal.AnimalId).Single();
+            var roomAnimal = db.Rooms.Where(r => r.AnimalId == animal.AnimalId).Single();
+            db.AnimalShots.DeleteAllOnSubmit(db.AnimalShots.Where(s => s.AnimalId == animal.AnimalId));
+            db.Adoptions.DeleteAllOnSubmit(db.Adoptions.Where(a => a.AnimalId == animal.AnimalId));
+
+            roomAnimal.AnimalId = null;
+           
 
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
@@ -53,7 +59,7 @@ namespace HumaneSociety
 
         internal static List<Client> GetClients()
         {
-            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             List<Client> allClients = db.Clients.ToList();
 
@@ -62,7 +68,7 @@ namespace HumaneSociety
 
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
         {
-            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             Client newClient = new Client();
 
@@ -99,7 +105,7 @@ namespace HumaneSociety
 
         internal static void UpdateClient(Client clientWithUpdates)
         {
-            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             // find corresponding Client from Db
             Client clientFromDb = db.Clients.Where(c => c.ClientId == clientWithUpdates.ClientId).Single();
@@ -118,7 +124,7 @@ namespace HumaneSociety
             Address updatedAddress = db.Addresses.Where(a => a.AddressLine1 == clientAddress.AddressLine1 && a.USStateId == clientAddress.USStateId && a.Zipcode == clientAddress.Zipcode).FirstOrDefault();
 
             // if the address isn't found in the Db, create and insert it
-            if(updatedAddress == null)
+            if (updatedAddress == null)
             {
                 Address newAddress = new Address();
                 newAddress.AddressLine1 = clientAddress.AddressLine1;
@@ -134,7 +140,7 @@ namespace HumaneSociety
 
             // attach AddressId to clientFromDb.AddressId
             clientFromDb.AddressId = updatedAddress.AddressId;
-            
+
             // submit changes
             db.SubmitChanges();
         }
@@ -151,23 +157,23 @@ namespace HumaneSociety
         }
         internal static Employee RetrieveEmployeeUser(string email, int employeeNumber)
         {
-            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             Employee employeeFromDb = db.Employees.Where(e => e.Email == email && e.EmployeeNumber == employeeNumber).FirstOrDefault();
 
-            if(employeeFromDb == null)
+            if (employeeFromDb == null)
             {
-                throw new NullReferenceException();            
+                throw new NullReferenceException();
             }
             else
             {
                 return employeeFromDb;
-            }            
+            }
         }
 
         internal static Employee EmployeeLogin(string userName, string password)
         {
-            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             Employee employeeFromDb = db.Employees.Where(e => e.UserName == userName && e.Password == password).FirstOrDefault();
 
@@ -176,7 +182,7 @@ namespace HumaneSociety
 
         internal static bool CheckEmployeeUserNameExist(string userName)
         {
-            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             Employee employeeWithUserName = db.Employees.Where(e => e.UserName == userName).FirstOrDefault();
 
@@ -185,7 +191,7 @@ namespace HumaneSociety
 
         internal static void AddUsernameAndPassword(Employee employee)
         {
-            HumaneSocietyDataContext  db = new HumaneSocietyDataContext();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             Employee employeeFromDb = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).FirstOrDefault();
 
@@ -207,6 +213,7 @@ namespace HumaneSociety
             newAnimal.PetFriendly = animal.PetFriendly;
             newAnimal.Weight = animal.Weight;
             newAnimal.CategoryId = animal.CategoryId;
+            newAnimal.DietPlanId = animal.DietPlanId;
 
             db.Animals.InsertOnSubmit(newAnimal);
             db.SubmitChanges();
@@ -240,12 +247,12 @@ namespace HumaneSociety
                         var searchCategory = db.Categories.Where(c => c.Name == entry.Value);
                         foreach (var animals in searchCategory)
                         {
-                            var searchAnimal = db.Animals.Where(a => a.CategoryId == animals.CategoryId );
+                            var searchAnimal = db.Animals.Where(a => a.CategoryId == animals.CategoryId);
                             foreach (var animal in searchAnimal)
                             {
                                 foundAnimals.Add(animal);
-                            }            
-                        }          
+                            }
+                        }
                         break;
                     case 2:
                         var searchAnimalName = db.Animals.Where(n => n.Name == entry.Value);
@@ -300,16 +307,16 @@ namespace HumaneSociety
                         break;
                 }
             }
-           var catchthing = foundAnimals.Distinct();
+            var catchthing = foundAnimals.Distinct();
 
             return catchthing.ToList(); ;
         }
         internal static void Adopt(Animal animal, Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-
+            Animal animalBeingAdpoted = db.Animals.Where(a => a.AnimalId == animal.AnimalId).Single();
             Adoption newAdoption = new Adoption();
-
+            animalBeingAdpoted.AdoptionStatus = "pending";
             newAdoption.ClientId = client.ClientId;
             newAdoption.AnimalId = animal.AnimalId;
             newAdoption.ApprovalStatus = "pending";
@@ -330,35 +337,51 @@ namespace HumaneSociety
 
             foreach (KeyValuePair<int, string> entry in updates)
             {
-             
+
                 switch (entry.Key)
                 {
-                    case 1:
+                    case 1://update animal's category
                         updateAnimal.CategoryId = Convert.ToInt32(entry.Value);
                         db.SubmitChanges();
                         break;
-                    case 2:
+                    case 2://update animal's name
                         updateAnimal.Name = entry.Value;
                         db.SubmitChanges();
                         break;
-                    case 3:
+                    case 3://update animal's age
                         updateAnimal.Age = Convert.ToInt32(entry.Value);
                         db.SubmitChanges();
                         break;
-                    case 4:
+                    case 4://update animal's demeanor
                         updateAnimal.Demeanor = entry.Value;
                         db.SubmitChanges();
                         break;
-                    case 5:
+                    case 5://update animal's kidfriendly
                         updateAnimal.KidFriendly = Convert.ToBoolean(entry.Value);
                         db.SubmitChanges();
                         break;
-                    case 6:
+                    case 6://update animal's petFriendly
                         updateAnimal.PetFriendly = Convert.ToBoolean(entry.Value);
                         db.SubmitChanges();
                         break;
-                    case 7:
+                    case 7://update animal's weight
                         updateAnimal.Weight = Convert.ToInt32(entry.Value);
+                        db.SubmitChanges();
+                        break;
+                    case 8://updates room for animal
+                        List<string> listOfRooms = new List<string>();
+                        var updateRoomToAnimal = db.Rooms.Select(r => r);
+                        foreach (Room room in updateRoomToAnimal)
+                        {
+                            string rroom = Convert.ToString(room.RoomNumber);
+
+                            listOfRooms.Add(rroom);
+
+                        }
+                        UserInterface.DisplayUserOptions(listOfRooms);
+                        int roomNumberInput = UserInterface.GetIntegerData("room number", "the animal's");
+                        var updateRoomAnimal = db.Rooms.Where(r => r.RoomNumber == roomNumberInput).Single();
+                        updateRoomAnimal.AnimalId = updateAnimal.AnimalId;
                         db.SubmitChanges();
                         break;
                     default:
@@ -371,7 +394,7 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             Animal animal = db.Animals.Where(a => a.AnimalId == id).Single();
 
-            return animal; 
+            return animal;
         }
         internal static int GetDietPlanId(string dietPlanName)
         {
@@ -397,9 +420,29 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-            Room foundRoom = db.Rooms.Where(r => r.AnimalId.Equals(animalID)).Single();
+            Room foundRoom = db.Rooms.Where(r => r.AnimalId.Equals(animalID)).SingleOrDefault();
+            Animal matchedAnimal = db.Animals.Where(a => a.AnimalId == animalID).Single();
+            var roomsInDb = db.Rooms.Select(r => r);
+            List<string> listOfRooms = new List<string>();
+            if (foundRoom == null)
+            {
+                foreach (Room room in roomsInDb)
+                {
+                    string rroom = Convert.ToString(room.RoomNumber);
+                    
+                    listOfRooms.Add(rroom);
+                    
+                }
+                UserInterface.DisplayUserOptions(listOfRooms);
 
-            return foundRoom;          
+                int roomNumberInput = UserInterface.GetIntegerData("room number", "the animal's");
+                var updateRoomAnimal = db.Rooms.Where(r => r.RoomNumber == roomNumberInput).Single();
+                updateRoomAnimal.AnimalId = matchedAnimal.AnimalId;
+                
+                db.SubmitChanges();
+            }
+
+            return foundRoom;
         }
         internal static List<AnimalShot> GetShots(Animal animal)
         {
@@ -407,13 +450,13 @@ namespace HumaneSociety
 
             List<AnimalShot> shotList = new List<AnimalShot>();
             var shots = db.AnimalShots.Where(a => a.AnimalId.Equals(animal.AnimalId));
-            foreach(var shot in shots)
+            foreach (var shot in shots)
             {
                 shotList.Add(shot);
             }
             return shotList;
         }
-      
+
         internal static void RunEmployeeQueries(Employee employee, string updated)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -432,7 +475,7 @@ namespace HumaneSociety
                     break;
                 case "update":
                     findEmployee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
-                    findEmployee = employee;                  
+                    findEmployee = employee;
                     break;
                 default:
                     break;
@@ -444,46 +487,50 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
+            var adoptedstatus = db.Adoptions.Where(a => a.AnimalId == adoption.AnimalId).Single();
+            var adoptedAnimal = db.Animals.Where(a => a.AnimalId == adoption.AnimalId).Single();
             if (trueOrFalse == true)
             {
-                adoption.ApprovalStatus = "approved";
-                adoption.Animal.AdoptionStatus = "adopted";
-                adoption.PaymentCollected = true;
+                adoptedstatus.ApprovalStatus = "approved";
+                adoptedAnimal.AdoptionStatus = "adopted";
+                adoptedstatus.PaymentCollected = true;
 
                 db.SubmitChanges();
             }
             else
             {
-                adoption.ApprovalStatus = "denied";
-                adoption.Animal.AdoptionStatus = "not adopted";
+                adoptedstatus.ApprovalStatus = "denied";
+                adoptedAnimal.AdoptionStatus = "not adopted";
 
                 db.SubmitChanges();
             }
-        }  
-        internal static void UpdateShot(string booster, Animal animal, int year, int month, int day)
+        }
+        internal static void UpdateShot(string inputName, Animal animal, int year, int month, int day)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            Shot shot = new Shot();
             AnimalShot animalShot = new AnimalShot();
             DateTime updatedDate = new DateTime(year, month, day);
-            
-            shot = db.Shots.Where(s => s.Name == booster).Single();
+
+            var shot = db.Shots.Where(s => s.Name == inputName).Single();
             if (shot == null)
             {
-                shot.Name = booster;
+                animalShot.AnimalId = animal.AnimalId;
+                animalShot.ShotId = shot.ShotId;
+                shot.Name = inputName;
+                animalShot.DateReceived = updatedDate;
+
+                db.AnimalShots.InsertOnSubmit(animalShot);
 
                 db.Shots.InsertOnSubmit(shot);
                 db.SubmitChanges();
             }
-            animalShot.AnimalId = animal.AnimalId;
-            animalShot.ShotId = shot.ShotId;
-            shot.Name = booster;
-            animalShot.DateReceived = updatedDate;
+            else if (shot.Name == inputName)
+            {
+                AnimalShot updateshots = db.AnimalShots.Where(s => s.ShotId == shot.ShotId && s.AnimalId == animal.AnimalId).Single();
+                updateshots.DateReceived = updatedDate;
+                db.SubmitChanges();
+            }
 
-            db.AnimalShots.InsertOnSubmit(animalShot);
-
-            db.SubmitChanges();
         }
-
     }
 }
