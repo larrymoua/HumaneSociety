@@ -190,8 +190,15 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
             Employee employeeWithUserName = db.Employees.Where(e => e.UserName == userName).FirstOrDefault();
-            
-            return employeeWithUserName == null;
+            if(employeeWithUserName == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
         }
 
         internal static void AddUsernameAndPassword(Employee employee)
@@ -455,7 +462,7 @@ namespace HumaneSociety
 
             Room foundRoom = db.Rooms.Where(r => r.AnimalId.Equals(animalID)).SingleOrDefault();
             Animal matchedAnimal = db.Animals.Where(a => a.AnimalId == animalID).Single();
-            var roomsInDb = db.Rooms.Select(r => r);
+            var roomsInDb = db.Rooms.Where(r => r.AnimalId == null);
             List<string> listOfRooms = new List<string>();
             if (foundRoom == null)
             {
@@ -466,6 +473,7 @@ namespace HumaneSociety
                     listOfRooms.Add(rroom);
                     
                 }
+                Console.WriteLine();
                 UserInterface.DisplayUserOptions(listOfRooms);
 
                 int roomNumberInput = UserInterface.GetIntegerData("room number", "the animal's");

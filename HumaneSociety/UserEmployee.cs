@@ -26,7 +26,7 @@ namespace HumaneSociety
         }
         protected override void RunUserMenus()
         {
-            List<string> options = new List<string>() { "What would you like to do? (select number of choice)", "1. Add animal", "2. Remove Anmial", "3. Check Animal Status",  "4. Approve Adoption" };
+            List<string> options = new List<string>() { "What would you like to do? (select number of choice)", "1. Add animal", "2. Remove Anmial", "3. Check Animal Status",  "4. Approve Adoption", "5. Add New Diet Plan" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
             RunUserInput(input);
@@ -49,6 +49,10 @@ namespace HumaneSociety
                     return;
                 case "4":
                     CheckAdoptions();
+                    RunUserMenus();
+                    return;
+                case "5":
+                    AddNewDietPlan();
                     RunUserMenus();
                     return;
                 default:
@@ -353,7 +357,7 @@ namespace HumaneSociety
         {
             Console.Clear();
             string username = UserInterface.GetStringData("username", "your");
-            if (Query.CheckEmployeeUserNameExist(username))
+            if (Query.CheckEmployeeUserNameExist(username) == true)
             {
                 UserInterface.DisplayUserOptions("Username already in use please try another username.");
                 GetUserName();
